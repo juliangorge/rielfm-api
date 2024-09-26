@@ -22,7 +22,7 @@ describe("postService", () => {
       tags: "Tags",
       image: "image.png",
       epigraph: "Epigraph",
-      date_created: new Date(),
+      created_at: new Date(),
       views: 0,
       user_id: 1,
     },
@@ -36,21 +36,21 @@ describe("postService", () => {
       tags: "Tags",
       image: "image.png",
       epigraph: "Epigraph",
-      date_created: new Date(),
+      created_at: new Date(),
       views: 0,
       user_id: 1,
     },
   ];
 
   beforeEach(() => {
-    postRepositoryInstance = new PostRepository();
+    postRepositoryInstance = new PostRepository("posts");
     postServiceInstance = new PostService(postRepositoryInstance);
   });
 
   describe("findAll", () => {
     it("return all posts", async () => {
       // Arrange
-      (postRepositoryInstance.findAllAsync as Mock).mockReturnValue(mockPosts);
+      (postRepositoryInstance.findAll as Mock).mockReturnValue(mockPosts);
 
       // Act
       const result = await postServiceInstance.findAll();
@@ -58,27 +58,13 @@ describe("postService", () => {
       // Assert
       expect(result.statusCode).toEqual(StatusCodes.OK);
       expect(result.success).toBeTruthy();
-      expect(result.message).equals("Posts found");
+      expect(result.message).equals("Items found");
       expect(result.responseObject).toEqual(mockPosts);
     });
 
-    it("returns a not found error for no posts found", async () => {
+    it("handles errors for findAll", async () => {
       // Arrange
-      (postRepositoryInstance.findAllAsync as Mock).mockReturnValue(null);
-
-      // Act
-      const result = await postServiceInstance.findAll();
-
-      // Assert
-      expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
-      expect(result.success).toBeFalsy();
-      expect(result.message).equals("No Posts found");
-      expect(result.responseObject).toBeNull();
-    });
-
-    it("handles errors for findAllAsync", async () => {
-      // Arrange
-      (postRepositoryInstance.findAllAsync as Mock).mockRejectedValue(new Error("Database error"));
+      (postRepositoryInstance.findAll as Mock).mockRejectedValue(new Error("Database error"));
 
       // Act
       const result = await postServiceInstance.findAll();
@@ -86,7 +72,7 @@ describe("postService", () => {
       // Assert
       expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
       expect(result.success).toBeFalsy();
-      expect(result.message).equals("An error occurred while retrieving posts.");
+      expect(result.message).equals("An error occurred while retrieving items.");
       expect(result.responseObject).toBeNull();
     });
   });
@@ -96,7 +82,7 @@ describe("postService", () => {
       // Arrange
       const testId = 1;
       const mockPost = mockPosts.find((post) => post.id === testId);
-      (postRepositoryInstance.findByIdAsync as Mock).mockReturnValue(mockPost);
+      (postRepositoryInstance.findById as Mock).mockReturnValue(mockPost);
 
       // Act
       const result = await postServiceInstance.findById(testId);
@@ -104,14 +90,14 @@ describe("postService", () => {
       // Assert
       expect(result.statusCode).toEqual(StatusCodes.OK);
       expect(result.success).toBeTruthy();
-      expect(result.message).equals("Post found");
+      expect(result.message).equals("Item found");
       expect(result.responseObject).toEqual(mockPost);
     });
 
-    it("handles errors for findByIdAsync", async () => {
+    it("handles errors for findById", async () => {
       // Arrange
       const testId = 1;
-      (postRepositoryInstance.findByIdAsync as Mock).mockRejectedValue(new Error("Database error"));
+      (postRepositoryInstance.findById as Mock).mockRejectedValue(new Error("Database error"));
 
       // Act
       const result = await postServiceInstance.findById(testId);
@@ -119,14 +105,14 @@ describe("postService", () => {
       // Assert
       expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
       expect(result.success).toBeFalsy();
-      expect(result.message).equals("An error occurred while finding post.");
+      expect(result.message).equals("An error occurred while finding item.");
       expect(result.responseObject).toBeNull();
     });
 
     it("returns a not found error for non-existent ID", async () => {
       // Arrange
       const testId = 1;
-      (postRepositoryInstance.findByIdAsync as Mock).mockReturnValue(null);
+      (postRepositoryInstance.findById as Mock).mockReturnValue(null);
 
       // Act
       const result = await postServiceInstance.findById(testId);
@@ -134,7 +120,7 @@ describe("postService", () => {
       // Assert
       expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
       expect(result.success).toBeFalsy();
-      expect(result.message).equals("Post not found");
+      expect(result.message).equals("Item not found");
       expect(result.responseObject).toBeNull();
     });
   });

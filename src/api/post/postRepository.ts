@@ -1,4 +1,5 @@
 import type { Post } from "@/api/post/postModel";
+import { BaseRepository } from "@/common/repositories/BaseRepository";
 
 export const posts: Post[] = [
   {
@@ -11,7 +12,7 @@ export const posts: Post[] = [
     tags: "Tags",
     image: "image.png",
     epigraph: "Epigraph",
-    date_created: new Date(),
+    created_at: new Date(),
     views: 0,
     user_id: 1,
   },
@@ -25,21 +26,13 @@ export const posts: Post[] = [
     tags: "Tags",
     image: "image.png",
     epigraph: "Epigraph",
-    date_created: new Date(),
+    created_at: new Date(),
     views: 0,
     user_id: 1,
   },
 ];
 
-export class PostRepository {
-  async findAllAsync(): Promise<Post[]> {
-    return posts;
-  }
-
-  async findByIdAsync(id: number): Promise<Post | null> {
-    return posts.find((post) => post.id === id) || null;
-  }
-
+export class PostRepository extends BaseRepository<Post> {
   async findFeaturedAsync(): Promise<Post[] | null> {
     return posts.slice(-20);
   }

@@ -16,7 +16,7 @@ export const PostSchema = z.object({
   tags: z.string().nullable(),
   image: z.string().max(150).nullable(),
   epigraph: z.string().max(80).nullable(),
-  date_created: z.date().default(() => new Date()),
+  created_at: z.date(),
   views: z.number().default(0),
   user_id: z.number(),
 });

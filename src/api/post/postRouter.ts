@@ -23,6 +23,15 @@ postRouter.get("/", postController.getPosts);
 
 postRegistry.registerPath({
   method: "get",
+  path: "/posts/featured",
+  tags: ["Post"],
+  responses: createApiResponse(z.array(PostSchema), "Success"),
+});
+
+postRouter.get("/featured", postController.getPostsFeatured);
+
+postRegistry.registerPath({
+  method: "get",
   path: "/posts/{id}",
   tags: ["Post"],
   request: { params: GetPostSchema.shape.params },
@@ -30,12 +39,3 @@ postRegistry.registerPath({
 });
 
 postRouter.get("/:id", validateRequest(GetPostSchema), postController.getPost);
-
-postRegistry.registerPath({
-  method: "get",
-  path: "/posts/featured",
-  tags: ["Post"],
-  responses: createApiResponse(z.array(PostSchema), "Success"),
-});
-
-postRouter.get("/featured", postController.getPostsFeatured);
