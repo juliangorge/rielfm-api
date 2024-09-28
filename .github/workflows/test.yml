@@ -24,11 +24,8 @@ jobs:
         with:
           cmd: install
 
-      - name: Set environment variables
+      - name: Run Test
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: echo "Environment variables set"
-
-      - name: Run Test
         run: yarn test
