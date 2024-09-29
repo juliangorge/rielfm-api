@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import request from "supertest";
 
 import type { Post } from "@/api/post/postModel";
-import { posts } from "@/api/post/postRepository";
 import type { ServiceResponse } from "@/common/models/serviceResponse";
 import { app } from "@/server";
 

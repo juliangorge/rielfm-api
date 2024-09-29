@@ -1,7 +1,7 @@
 import type { Post } from "@/api/post/postModel";
 import { PostRepository } from "@/api/post/postRepository";
 import { ServiceResponse } from "@/common/models/serviceResponse";
-import { BaseService } from "@/common/services/BaseService";
+import { BaseService } from "@/common/services/newBaseService";
 import { StatusCodes } from "http-status-codes";
 
 export class PostService extends BaseService<Post, PostRepository> {
