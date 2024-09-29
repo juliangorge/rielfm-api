@@ -1,5 +1,5 @@
 import type { Post } from "@/api/post/postModel";
-import { BaseRepository } from "@/common/repositories/BaseRepository";
+import { BaseRepository } from "@/common/repositories/baseRepository";
 
 export const posts: Post[] = [
   {
